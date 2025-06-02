@@ -1,0 +1,12 @@
+# node modules
+node_modules/
+
+# 환경 변수 파일
+.env
+
+# vercel 관련 숨김 파일
+.vercel/
+
+# OS/IDE 불필요한 파일
+.DS_Store
+*.log

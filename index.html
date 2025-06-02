@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>피부타입별 화장품 추천 AI</title>
+</head>
+<body>
+  <h1>나에게 맞는 화장품 추천받기</h1>
+
+  <input id="name" placeholder="이름" /><br />
+  <select id="skinType">
+    <option value="">-- 피부타입 선택 --</option>
+    <option>건성</option>
+    <option>지성</option>
+    <option>복합성</option>
+    <option>민감성</option>
+  </select><br />
+  <input id="concern" placeholder="피부 고민 (예: 여드름, 건조함 등)" /><br />
+  <button onclick="getRecommendation()">추천받기</button>
+
+  <h3>추천 결과</h3>
+  <pre id="result"></pre>
+
+  <script>
+    async function getRecommendation() {
+      const name = document.getElementById("name").value;
+      const skinType = document.getElementById("skinType").value;
+      const concern = document.getElementById("concern").value;
+
+      const response = await fetch("http://localhost:3000/api/duksungAI", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, skinType, concern }),
+      });
+
+      const data = await response.json();
+      document.getElementById("result").innerText = data.answer || data.error;
+    }
+  </script>
+</body>
+</html>
