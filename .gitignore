@@ -10,3 +10,4 @@ node_modules/
 # OS/IDE 불필요한 파일
 .DS_Store
 *.log
+.vercel

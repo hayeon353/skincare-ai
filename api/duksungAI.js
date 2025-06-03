@@ -32,16 +32,19 @@ export default async function handler(req, res) {
 `;
 
   try {
-    const result = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
-      contents: prompt,
-      config: {
-        systemInstruction:
-          "당신은 피부과 상담 전문가이자 화장품 전문가입니다. 사용자의 피부타입과 피부 고민에 따라, 효과적인 스킨케어 제품 유형과 조언을 200자 이내로 쉬운 말로 알려주세요. 부정적인 표현 없이 긍정적이고 따뜻한 말투로 설명해주세요.",
-      },
+    const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const result = await model.generateContent({
+      contents: [
+        {
+          role: "user",
+          parts: [{ text: prompt }],
+        },
+      ],
     });
 
-    res.status(200).json({ answer: result.text });
+    const text = result.response.candidates[0]?.content?.parts[0]?.text || "추천 결과를 생성할 수 없습니다.";
+    res.status(200).json({ answer: text });
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Gemini API 오류 발생" });
